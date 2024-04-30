@@ -16,6 +16,8 @@ const getData = async () =>{
   }
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function Booking(){
   const data = await getData()
   return(
