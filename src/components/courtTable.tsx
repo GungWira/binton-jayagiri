@@ -41,7 +41,7 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
 
   const handlerOrder = async () =>{
     if(orders.length !== 0){
-      const post = await fetch(`${process.env.REQ_URL}/booking`, {
+      const post = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/booking`, {
         method : "POST",
         headers : {
           "Content-type" : "application/json"

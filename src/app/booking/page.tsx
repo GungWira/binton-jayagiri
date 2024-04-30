@@ -3,7 +3,7 @@ import Header from "@/components/header";
 
 const getData = async () =>{
   try {
-    const data = await fetch(`${process.env.REQ_URL}/booking`, {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/booking`, {
       cache : "no-store",
       method : "GET"
     })
