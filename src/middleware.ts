@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 export function middleware(request : NextRequest){
-  const res = NextResponse.next()
+  const res = NextResponse.next() 
+  res.headers.set("custom-header", "halo")
   res.headers.set('Access-Control-Allow-Credentials', 'true')
   res.headers.set('Access-Control-Allow-Origin', '*')
   res.headers.set('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
@@ -10,5 +11,5 @@ export function middleware(request : NextRequest){
 }
 
 export const config = {
-  matcher: '/api/user'
+  matcher: '/:path*'
 }
