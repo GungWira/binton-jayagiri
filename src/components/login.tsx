@@ -18,7 +18,8 @@ export default function Login(){
       const result = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/user`, {
         method : "POST",
         headers : {
-          "Content-type" : "application/json"
+          "Content-type" : "application/json",
+          "Access-Control-Allow-Origin" : "*"
         },
         body : JSON.stringify({username, phone})
       })
