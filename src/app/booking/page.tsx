@@ -1,10 +1,9 @@
-import CourtTable from "@/components/courtTable";
 import DateButton from "@/components/dateButton";
 import Header from "@/components/header";
 
 const getData = async () =>{
   try {
-    const data = await fetch("http://localhost:3000/api/booking", {
+    const data = await fetch(process.env.REQ_URL+"/booking", {
       cache : "no-store",
       method : "GET"
     })

@@ -5,8 +5,6 @@ import Badminton from "../../public/badminton-1.svg"
 import Kock from "../../public/shuttle.svg"
 import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
-import { clearTimeout } from "timers"
-
 
 export default function Login(){
   const router = useRouter()
@@ -17,7 +15,7 @@ export default function Login(){
   const handleSubmit = async (e : any) => {
     e.preventDefault()
     if(username.trim() !== "" && phone.trim() !== ""){
-      const result = await fetch(`http://localhost:3000/api/user`, {
+      const result = await fetch(process.env.REQ_URL+`/api/user`, {
         method : "POST",
         headers : {
           "Content-type" : "application/json"

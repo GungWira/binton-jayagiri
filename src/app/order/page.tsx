@@ -7,7 +7,7 @@ const getData = async () =>{
   const cookiesStore = cookies()
   const usernameID = cookiesStore.get("id")
   try {
-    const data = await fetch("http://localhost:3000/api/order", {
+    const data = await fetch(process.env.REQ_URL+"/order", {
       cache : "no-store",
       method : "POST",
       body : JSON.stringify({usernameID : usernameID?.value})
