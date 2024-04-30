@@ -40,7 +40,9 @@ model Playtime{
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
   start       String
   end         String
-  status      Boolean
+  startHour   Int
+  status      Int
+  date        DateTime
   court       Court       @relation(fields: [courtID], references: [id])
   courtID     String      @db.ObjectId
 }
@@ -51,6 +53,7 @@ model Book {
   court         String
   start         String
   end           String
+  startHour     Int
   status        Boolean
   username      User      @relation(fields: [usernameID], references: [id])
   usernameID    String    @db.ObjectId 

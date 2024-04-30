@@ -12,6 +12,7 @@ type Order = {
   court : String,
   start : String,
   end : String,
+  startHour : Number,
   name : String
 }
 
@@ -94,24 +95,37 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
             {playTimes.map((playTime : any, lock : number) => {
               const playCourt: Order = {
                 id : playTime.id,
-                date : court.date.date,
+                date : playTime.date,
                 court : court.name,
                 start : playTime.start,
                 end : playTime.end,
+                startHour : playTime.startHour,
                 name : ""
               }
               const isOrder = orders.some(order => order.id === playCourt.id)
               const border = isOrder ? "#18A87B" : "#D9F1EA"
-              return(
-                playTime.status === true?
+              // jam sudah lewat
+              if(playTime.status === 0){
+                return(
+                <button key={lock} className="bg-[#16AA7C] mb-1 py-2 border rounded-full border-[#16AA7C] w-full flex justify-center items-center">
+                  <p className="font-ligth text-xs text-[#ffffff]">Passed</p>
+                </button>
+                )
+              // jam masih ada
+              }else if(playTime.status === 1){
+                return(  
                 <button key={lock} className="mb-1 py-2 border rounded-full w-full flex justify-center items-center" style={{borderColor: border}} onClick={() => {orderHandler(playCourt)}}>
                   <p className="font-ligth text-xs text-[#434343]">{`${playTime.start} - ${playTime.end}`}</p>
                 </button>
-                :
+                )
+              // diclick 
+              }else{
+                return(
                 <button key={lock} className="bg-[#16AA7C] mb-1 py-2 border rounded-full border-[#16AA7C] w-full flex justify-center items-center">
                   <p className="font-ligth text-xs text-[#ffffff]">Booked</p>
                 </button>
-              )
+                )
+              }
             })}
           </div>
         )})}

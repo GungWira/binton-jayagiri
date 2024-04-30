@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 export default function OrderActive({data} : {data : any}){
   const [dateList, setDateList] = useState([])
-  const [dateIndex, setDateIndex] = useState(0)
 
   useEffect(() =>{
     const getDayName = (dayIndex : number) => {
