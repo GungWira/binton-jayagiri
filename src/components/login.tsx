@@ -4,7 +4,7 @@ import Image from "next/image"
 import Badminton from "../../public/badminton-1.svg"
 import Kock from "../../public/shuttle.svg"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { clearTimeout } from "timers"
 
 
@@ -12,6 +12,7 @@ export default function Login(){
   const router = useRouter()
   const [username, setuserName] = useState("")
   const [phone, setPhone] = useState("")
+  const notifRef = useRef <HTMLDivElement|null> (null)
 
   const handleSubmit = async (e : any) => {
     e.preventDefault()
@@ -29,15 +30,19 @@ export default function Login(){
         setuserName("")
         setPhone("")
       }else{
-        document.querySelector(".notif").style.transform = "translateY(0%)"
-        handlerInvalid()
+        if(notifRef.current){
+          notifRef.current.style.transform = "translateY(0%)"
+          handlerInvalid()
+        }
       }
     }
   }
 
   const handlerInvalid = () =>{
     setTimeout(() => {
-        document.querySelector(".notif").style.transform = "translateY(-200%)"
+      if(notifRef.current){
+        notifRef.current.style.transform = "translateY(-200%)"
+      }
     }, 4000);
   }
   return(
@@ -58,7 +63,7 @@ export default function Login(){
           <Image src={Kock} alt="Kock"/>
         </button>
       </form>
-    <section className="notif w-full p-6 py-8 absolute top-0 left-0" style={{transition: "1s ease-in-out", transform: "translateY(-200%)"}}>
+    <section ref={notifRef} className="notif w-full p-6 py-8 absolute top-0 left-0" style={{transition: "1s ease-in-out", transform: "translateY(-200%)"}}>
       <div className="bg-[#ffffff] w-full p-4 rounded-md flex flex-col gap-2" style={{filter : "drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.05))", zIndex: 9}}>
         <p className="font-bold text-base text-[#434343]">Invalid login</p>
         <p className="font-ligth text-xs text-[#434343]">Username atau nomor telp tidak valid, mohon coba lagi</p>

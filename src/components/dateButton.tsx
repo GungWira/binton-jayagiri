@@ -4,11 +4,12 @@ import Image from "next/image";
 import DateIcon from "../../public/date.svg"
 import Drop from "../../public/drop.svg"
 import CourtTable from "./courtTable";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function DateButton({data} : any){
   const [dateList, setDateList] = useState([])
   const [dateIndex, setDateIndex] = useState(0)
+  const boxDateRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() =>{
     const getDayName = (dayIndex : number) => {
@@ -25,17 +26,21 @@ export default function DateButton({data} : any){
   }, [])
 
   const openDateList = () =>{
-    document.querySelector(".box-date").style.height = "243px"
+    if (boxDateRef.current){
+      boxDateRef.current.style.height = "243px"
+    }
   }
 
   const updateDate = (index : number) =>{
-    setDateIndex(index)
-    document.querySelector(".box-date").style.height = "40px"
+    if(boxDateRef.current){
+      setDateIndex(index)
+      boxDateRef.current.style.height = "40px"
+    }
   }
 
   return(
     <>
-      <div className="overflow-hidden h-10 box-date border border-[#0EAF7D] rounded-md mt-2 px-4" style={{filter : "drop-shadow(0px 4px 12px rgba(25, 168, 123, 0.05)", transition: "ease-in-out 1s"}}>
+      <div ref={boxDateRef} className="overflow-hidden h-10 box-date border border-[#0EAF7D] rounded-md mt-2 px-4" style={{filter : "drop-shadow(0px 4px 12px rgba(25, 168, 123, 0.05)", transition: "ease-in-out 1s"}}>
         <button onClick={openDateList} className="relative flex flex-col w-full justify-between items-center py-3">
           <div className="flex flex-row w-full justify-between items-center">
             <Image src={DateIcon} alt="Date" className="mr-3"/>
