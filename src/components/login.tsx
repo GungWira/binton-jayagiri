@@ -15,7 +15,7 @@ export default function Login(){
   const handleSubmit = async (e : any) => {
     e.preventDefault()
     if(username.trim() !== "" && phone.trim() !== ""){
-      const result = await fetch(process.env.REQ_URL+`/api/user`, {
+      const result = await fetch(process.env.REQ_URL+"/user", {
         method : "POST",
         headers : {
           "Content-type" : "application/json"
