@@ -30,9 +30,9 @@ export async function POST(request : NextRequest) {
     // if valid
     if(result.username === username){
       // return ke halaman login
-      cookies().set('username', result.username)
-      cookies().set('phone', result.phone)
-      cookies().set('id', result.id)
+      cookies().set('username', result.username, {httpOnly : true, maxAge : 60*60, secure : true})
+      cookies().set('phone', result.phone, {httpOnly : true, maxAge : 60*60, secure : true})
+      cookies().set('id', result.id, {httpOnly : true, maxAge : 60*60, secure : true})
       return NextResponse.json({message: "Valid username", data : result})
     }
     // if invalid
@@ -45,8 +45,8 @@ export async function POST(request : NextRequest) {
       phone,
     }
   })
-  cookies().set('username', post.username)
-  cookies().set('phone', post.phone)
-  cookies().set('id', post.id)
+  cookies().set('username', post.username, {httpOnly : true, maxAge : 60*60, secure : true})
+  cookies().set('phone', post.phone, {httpOnly : true, maxAge : 60*60, secure : true})
+  cookies().set('id', post.id, {httpOnly : true, maxAge : 60*60, secure : true})
   return NextResponse.json({message: "User created successfully", data : post})
 }

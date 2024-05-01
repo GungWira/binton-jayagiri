@@ -1,5 +1,7 @@
 import DateButton from "@/components/dateButton";
 import Header from "@/components/header";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const getData = async () =>{
   try {
@@ -19,6 +21,9 @@ const getData = async () =>{
 export const dynamic = 'force-dynamic'
 
 export default async function Booking(){
+  if(!cookies().get('username') && !cookies().get('phone') && !cookies().get('id')){
+    redirect('/')
+  }
   const data = await getData()
   return(
     <section className="p-6">

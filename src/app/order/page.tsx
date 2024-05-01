@@ -2,6 +2,7 @@ import Header from "@/components/header";
 import OrderActive from "@/components/orderActive";
 import OrderZero from "@/components/orderZero";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const getData = async () =>{
   const cookiesStore = cookies()
@@ -22,6 +23,9 @@ const getData = async () =>{
 }
 
 export default async function Booking(){
+  if(!cookies().get('username') && !cookies().get('phone') && !cookies().get('id')){
+    redirect('/')
+  }
   const data = await getData()
   const isZero = data.data.length
   return(
