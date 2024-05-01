@@ -4,6 +4,7 @@ import Image from "next/image"
 import Kock from "../../public/shuttle.svg"
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
+import Loadingbar from "./loadingbar"
 
 
 type Order = {
@@ -22,6 +23,7 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
   const courts = data.courts
   const checkoutBtnRef = useRef<HTMLButtonElement | null>(null)
   const sectionRef = useRef<HTMLDivElement | null>(null)
+  const [start, setStart] = useState(false)
 
   const router = useRouter()
 
@@ -42,6 +44,7 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
 
   const handlerOrder = async () =>{
     if(orders.length !== 0){
+      setStart(true)
       const post = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/booking`, {
         method : "POST",
         headers : {
@@ -52,6 +55,7 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
       if(post.ok){
         setIsOpen(false)
         setOrders([])
+        setStart(false)
         router.refresh()
       }else{
         console.log("no")
@@ -174,6 +178,7 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
           <Image src={Kock} alt="Kock"/>
         </button>
       </section>
+      <Loadingbar start={start}/>
     </>
   )
 }

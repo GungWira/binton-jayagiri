@@ -16,7 +16,6 @@ export default function Dashboard(){
           <Link href={"/order"} className="flex flex-1 border rounded-full py-2 justify-center items-center font-ligth text-xs text-[#434343] border-[#D9F1EA]">Cek Order Lapangan</Link>
         </div>
       </div>
-
     </section>
   )
 }

@@ -5,15 +5,18 @@ import Badminton from "../../public/badminton-1.svg"
 import Kock from "../../public/shuttle.svg"
 import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
+import Loadingbar from "./loadingbar"
 
 export default function Login(){
   const router = useRouter()
   const [username, setuserName] = useState("")
   const [phone, setPhone] = useState("")
   const notifRef = useRef <HTMLDivElement|null> (null)
+  const [start, setStart] = useState(false)
 
   const handleSubmit = async (e : any) => {
     e.preventDefault()
+    setStart(true)
     if(username.trim() !== "" && phone.trim() !== ""){
       const result = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/user`, {
         method : "POST",
@@ -68,6 +71,7 @@ export default function Login(){
         <p className="font-ligth text-xs text-[#434343]">Username atau nomor telp tidak valid, mohon coba lagi</p>
       </div>
     </section>
+    <Loadingbar start={start}/>
     </>
   )
 }
