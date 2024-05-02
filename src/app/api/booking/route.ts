@@ -4,16 +4,30 @@ import { cookies } from "next/headers";
 
 const prisma = new PrismaClient()
 
+const convertToISOSting = (obj : String) =>{
+  const year:number = parseInt(obj.split(",")[0].split("/")[2])
+  const month:number = parseInt(obj.split(",")[0].split("/")[0]) - 1
+  const day:number = parseInt(obj.split(",")[0].split("/")[1])
+
+  const newDate = new Date(year, month, day, 8, 0, 0)
+  return newDate.toISOString()
+}
+
 export async function GET(request : NextRequest) {
-  const curentDate = new Date()
+  const date = new Date()
+  const curentDate = convertToISOSting(date.toLocaleString('en-US', {timeZone: 'Asia/Makassar', hour12:false}))
   const maxDay = new Date()
-  maxDay.setDate(curentDate.getDate() + 7)
+  maxDay.setDate(maxDay.getDate() + 7)
+  const curentMaxDay = convertToISOSting(maxDay.toLocaleString('en-US', {timeZone: 'Asia/Makassar', hour12:false}))
+  console.log(curentDate)
+  console.log(curentMaxDay)
+
   const datas = await prisma.dateList.findMany({
     where : {
       status : true,
       AND : [
         {date : {gte : curentDate}},
-        {date : {lt : maxDay}}
+        {date : {lt : curentMaxDay}}
       ]
     },
     select : {
@@ -36,6 +50,7 @@ export async function GET(request : NextRequest) {
       }
     }
   })
+  // console.log(datas)
   return NextResponse.json({message : "Date successfully fetched", data : datas})
 }
 
@@ -64,5 +79,5 @@ export async function POST(request : NextRequest) {
     })
   }
 
-  return NextResponse.json({message : "Halo"})
+  return NextResponse.json({message : "Order successfully added!"})
 }
