@@ -13,6 +13,7 @@ export default async function Home() {
     method : "GET",
     cache : "no-store"
   })
+  console.log(update)
 
   return (
     <>
