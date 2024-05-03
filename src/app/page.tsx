@@ -3,6 +3,8 @@ import Loading from "@/components/loading";
 import { cookies } from 'next/headers'
 import Login from "@/components/login";
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   const cookieStrore = cookies()
   const name = cookieStrore.get('name')
@@ -11,6 +13,7 @@ export default async function Home() {
     method : "GET",
     cache : "no-store"
   })
+
   return (
     <>
       <main>
