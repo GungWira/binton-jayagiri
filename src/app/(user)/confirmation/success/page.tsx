@@ -3,21 +3,29 @@
 import Image from "next/image";
 import Badminton from "../../../../../public/badminton-3.svg"
 import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function SuccessPage(){
+  const router = useRouter()
   const [countdown, setCountdown] = useState(8);
+  
+  const backToOrder = () =>{
+    console.log("pp")
+    router.push("/order")
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (countdown > 0) {
         setCountdown(countdown - 1);
+      }else{
+        console.log("ok")
+        backToOrder()
       }
     }, 1000);
 
     return () => {
       clearTimeout(timer)
-      redirect("/order")
     };
   }, [countdown]);
   return(
