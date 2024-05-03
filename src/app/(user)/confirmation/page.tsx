@@ -1,6 +1,7 @@
 "use client"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
+import { Suspense } from "react"
 
 
 export default function SuccessPage(){
@@ -27,9 +28,11 @@ export default function SuccessPage(){
   }
   return(
     <>
+    <Suspense fallback = {<div>Loading ...</div>}>
       <section>
-
+        <p>Wait</p>
       </section>
+    </Suspense>
     </>
   )
 }
