@@ -17,6 +17,12 @@ type Order = {
   name : String
 }
 
+declare global {
+  interface Window {
+    snap: any;
+  }
+}
+
 export default function CourtTable({data} : {data : any}, {handler} : {handler : any}){
   const [orders, setOrders] = useState<Order[]>([])
   const [isOpen, setIsOpen] = useState(false)
@@ -44,15 +50,18 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
 
   const handlerOrder = async () =>{
     if(orders.length !== 0){
-      setStart(true)
-      const post = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/booking`, {
+      setStart(true) // untuk memanggil loadingbar
+      const post = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/tokenizer`, {
         method : "POST",
         headers : {
           "Content-type" : "application/json"
         },
         body : JSON.stringify({orders})
       })
+      const requestData = await post.json()
       if(post.ok){
+        console.log(requestData.token)
+        window.snap.pay(requestData.token)
         setIsOpen(false)
         setOrders([])
         setStart(false)
@@ -87,6 +96,20 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
       }
     }
   }, [orders])
+
+  useEffect(() =>{
+    const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js"
+    const clientKey : string = process.env.NEXT_PUBLIC_CLIENT_KEY!
+    const script : any = document.createElement('script')
+    script.src = snapScript
+    script.setAttribute('data-client-key', clientKey)
+    script.async = true
+    document.body.appendChild(script)
+
+    return () =>{
+      document.body.removeChild(script)
+    }
+  }, [])
   
   return(
     <>

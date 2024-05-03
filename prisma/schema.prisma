@@ -54,8 +54,17 @@ model Book {
   start         String
   end           String
   startHour     Int
-  status        Boolean
+  status        Boolean  // true if still valid time, false if passed the time
   username      User      @relation(fields: [usernameID], references: [id])
   usernameID    String    @db.ObjectId 
+  orderStatus   Order     @relation(fields: [orderID], references: [id])
+  orderID       String    @db.ObjectId
+}
+
+model Order {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  items         String[]
+  orderStatus   String
+  books         Book[]
 }
 

@@ -17,7 +17,6 @@ export default function DateButton({data} : any){
       return dayNames[dayIndex];
     };
     const formattedDateList = data.map((item : any) => {
-      console.log(item.date)
       const dateObj = new Date(item.date);
       const day = getDayName(dateObj.getDay()); // Get day name using custom function
       const date = `${item.date.split("T")[0].split("-")[2]}-${item.date.split("T")[0].split("-")[1]}-${item.date.split("T")[0].split("-")[0]}`

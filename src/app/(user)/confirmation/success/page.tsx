@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
 export default function SuccessPage(){
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(8);
 
   useEffect(() => {
     const timer = setTimeout(() => {

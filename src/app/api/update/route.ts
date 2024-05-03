@@ -131,3 +131,34 @@ const convertToISOSting = (obj : String) =>{
   updateDataBaseTime()
   return NextResponse.json({message : "Data ready to serve!", serve: true}, {status:200})
 }
+
+
+export async function POST (request:NextRequest) {
+  const {order_id, transaction_status} = await request.json()
+  const update = await prisma.order.update({
+    where:{
+      id : order_id
+    },
+    data : {
+      orderStatus : transaction_status
+    },
+    select : {
+      items : true,
+    }
+  })
+  if(update){
+    const items = update.items
+    await prisma.playtime.updateMany({
+      where : {
+        id : {
+          in : items
+        }
+      },
+      data: {
+        status : 2
+      }
+    })
+  }
+  console.log(update.items)
+  return NextResponse.json({message : "Order success"})
+}

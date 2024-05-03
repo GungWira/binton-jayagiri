@@ -19,8 +19,6 @@ export async function GET(request : NextRequest) {
   const maxDay = new Date()
   maxDay.setDate(maxDay.getDate() + 7)
   const curentMaxDay = convertToISOSting(maxDay.toLocaleString('en-US', {timeZone: 'Asia/Makassar', hour12:false}))
-  console.log(curentDate)
-  console.log(curentMaxDay)
 
   const datas = await prisma.dateList.findMany({
     where : {
@@ -50,34 +48,5 @@ export async function GET(request : NextRequest) {
       }
     }
   })
-  // console.log(datas)
   return NextResponse.json({message : "Date successfully fetched", data : datas})
-}
-
-export async function POST(request : NextRequest) {
-  const cookiesStore = cookies()
-  const userID = cookiesStore.get("id")
-  const body = await request.json()
-  const dataLength = body.orders.length
-
-  for (let i = 0; i < dataLength; i++) {
-    const order = body.orders[i];
-    await prisma.book.create({
-      data : {
-        date : order.date,
-        court : order.court,
-        start : order.start,
-        end : order.end,
-        startHour : order.startHour,
-        status : true,
-        usernameID : userID!.value,
-      }
-    })
-    await prisma.playtime.update({
-      where : { id : order.id },
-      data : { status : 2 }
-    })
-  }
-
-  return NextResponse.json({message : "Order successfully added!"})
 }
