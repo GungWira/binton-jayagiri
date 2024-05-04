@@ -6,8 +6,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
 
-export const dynamic = 'force-dynamic'
-
 let snap = new Midtrans.Snap({
   isProduction : false,
   serverKey : process.env.SECRET_KEY,

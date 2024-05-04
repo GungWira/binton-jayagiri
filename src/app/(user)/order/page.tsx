@@ -10,6 +10,7 @@ const getData = async () =>{
   try {
     const data = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/order`, {
       cache : "no-store",
+      next : {revalidate : 0},
       method : "POST",
       body : JSON.stringify({usernameID : usernameID?.value})
     })

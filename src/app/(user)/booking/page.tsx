@@ -3,11 +3,11 @@ import Header from "@/components/header";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const dynamic = 'force-dynamic'
 const getData = async () =>{
   try {
     const data = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/booking`, {
       cache : "no-store",
+      next : {revalidate : 0},
       method : "GET"
     })
     if(!data.ok){

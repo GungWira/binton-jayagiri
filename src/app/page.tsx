@@ -4,10 +4,10 @@ import { cookies } from 'next/headers'
 import Login from "@/components/login";
 
 
-export const dynamic = 'force-dynamic'
 const fetchUpdate = async () =>{
   const update = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/update`,{
     method : "GET",
+    next : {revalidate : 0},
     cache : "no-store"
   })
   return update.ok
@@ -19,8 +19,7 @@ export default async function Home() {
   const name = cookieStrore.get('name')
   const id = cookieStrore.get('id')
   const serve = await fetchUpdate()
-  console.log(serve)
-
+  
   return (
     <>
       <main>
