@@ -3,6 +3,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
+export const dynamic = 'force-dynamic'
+
 const convertToISOSting = (obj : String) =>{
   const year:number = parseInt(obj.split(",")[0].split("/")[2])
   const month:number = parseInt(obj.split(",")[0].split("/")[0]) - 1
