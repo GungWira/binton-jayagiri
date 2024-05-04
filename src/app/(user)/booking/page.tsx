@@ -3,6 +3,7 @@ import Header from "@/components/header";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+export const dynamic = 'force-dynamic'
 const getData = async () =>{
   try {
     const data = await fetch(`${process.env.NEXT_PUBLIC_REQ_URL}/booking`, {
@@ -18,7 +19,6 @@ const getData = async () =>{
   }
 }
 
-export const dynamic = 'force-dynamic'
 
 export default async function Booking(){
   if(!cookies().get('username') && !cookies().get('phone') && !cookies().get('id')){
