@@ -69,13 +69,12 @@ export async function POST(request : NextRequest) {
               end : item.end,
               startHour : item.startHour,
               status : true,
-              usernameID : userID,
+              usernameID : cookiesStore.get("id")?.value,
             }))
           }
         }
       }
     })
-    console.log(ordersPlacement)
     if(ordersPlacement){
       let parameter = {
         customer_details : {

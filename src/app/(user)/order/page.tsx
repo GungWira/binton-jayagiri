@@ -28,12 +28,13 @@ export default async function Booking(){
     redirect('/')
   }
   const data = await getData()
-  const isZero = data.data.length
+  const validData = data.data.filter((item : any) => item.orderStatus.orderStatus === "settlement")
+  const isZero = validData.length
   return(
     <section className="p-6">
       <Header/>
       {isZero ?
-        <OrderActive data={data.data}/>
+        <OrderActive data={validData}/>
       :
         <OrderZero/>
       }

@@ -60,7 +60,6 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
       })
       const requestData = await post.json()
       if(post.ok){
-        console.log(requestData.token)
         window.snap.pay(requestData.token)
         setIsOpen(false)
         setOrders([])

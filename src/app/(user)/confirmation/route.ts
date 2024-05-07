@@ -43,7 +43,7 @@ export async function GET (request:NextRequest) {
           id : order_id
         },
         data :{
-          orderStatus : "cancel"
+          orderStatus : "cancel",
         }
       })
       if(dataOrder){

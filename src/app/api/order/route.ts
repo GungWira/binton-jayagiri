@@ -41,13 +41,14 @@ export async function POST(request:NextRequest) {
     const data = await prisma.book.findMany({
       where : {
         usernameID : body.usernameID,
-        AND: {
-          status : true
-        }
+        status : true
+      },
+      include:{
+        orderStatus : true
       }
-    })
+    });
     return NextResponse.json({message: "Data founded", data: data})
   } catch (error) {
-    
+    console.log(error)
   }
 }

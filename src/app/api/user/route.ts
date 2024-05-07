@@ -17,7 +17,7 @@ export async function POST(request : NextRequest) {
       username : true,
       phone : true,
       books : {
-        select:{
+        select : {
           id : true,
           date : true,
           court : true
