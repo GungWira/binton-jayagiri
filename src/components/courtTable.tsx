@@ -139,7 +139,7 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
                 </button>
                 )
               // jam masih ada
-              }else if(playTime.status === 1){
+              }else if(playTime.status === 1 || playTime.status === 4){
                 return(  
                 <button key={lock} className="mb-1 py-2 border rounded-full w-full flex justify-center items-center" style={{borderColor: border}} onClick={() => {orderHandler(playCourt)}}>
                   <p className="font-ligth text-xs text-[#434343]">{`${playTime.start} - ${playTime.end}`}</p>

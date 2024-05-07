@@ -38,7 +38,30 @@ export async function GET (request:NextRequest) {
         }
       }
     }else{
-      redirect("/confirmation/fail")
+      const dataOrder = await prisma.order.update({
+        where:{
+          id : order_id
+        },
+        data :{
+          orderStatus : "cancel"
+        }
+      })
+      if(dataOrder){
+        const updateIds = dataOrder.items
+        const update = await prisma.playtime.updateMany({
+          where : {
+            id : {
+              in : updateIds
+            },
+          },
+          data :{
+            status : 1
+          }
+        })
+        if(update){
+          redirect("/confirmation/fail")
+        }
+      }
     }
   }else{
     redirect("/")
