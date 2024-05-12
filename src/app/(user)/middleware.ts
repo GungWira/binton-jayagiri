@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export function middleware(request : NextRequest){
   if(!cookies().get('username') && !cookies().get('phone') && !cookies().get('id')){

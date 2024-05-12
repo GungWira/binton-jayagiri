@@ -3,6 +3,7 @@ import Midtrans from 'midtrans-client'
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { PrismaClient } from '@prisma/client';
+import { verifyToken } from '@/libs/jwt';
 
 const prisma = new PrismaClient()
 
@@ -18,6 +19,8 @@ export async function POST(request : NextRequest) {
   const data = body.orders
   const dataLength = body.orders.length
   const itemsIDs = data.map(item => item.id)
+  const auth = cookiesStore.get("auth")?.value
+  const verfify = verifyToken(auth)
   let token = ""
 
   // cek is the court unbooked
@@ -55,11 +58,13 @@ export async function POST(request : NextRequest) {
     })
   
     // made order and book
-    const userID = cookiesStore.get("id")?.value
+    const userID = verfify?.id
     const ordersPlacement = await prisma.order.create({
       data:{
         items : itemsIDs,
         orderStatus : 'pending',
+        usernameID : userID,
+        createdAt : new Date,
         books : {
           createMany : {
             data : data.map(item => ({
@@ -69,7 +74,7 @@ export async function POST(request : NextRequest) {
               end : item.end,
               startHour : item.startHour,
               status : true,
-              usernameID : cookiesStore.get("id")?.value,
+              usernameID : userID,
             }))
           }
         }
@@ -78,9 +83,9 @@ export async function POST(request : NextRequest) {
     if(ordersPlacement){
       let parameter = {
         customer_details : {
-          user_id : cookiesStore.get("id").value,
-          username : cookiesStore.get("username").value,
-          phone : cookiesStore.get("phone").value
+          user_id : verfify.id,
+          username : verfify?.username,
+          phone : verfify?.phone
         },
         transaction_details :{
           order_id : ordersPlacement.id,

@@ -18,6 +18,7 @@ model User {
   username      String
   phone         String     @unique
   books         Book[]
+  orders        Order[]
 }
 
 model DateList {
@@ -41,7 +42,7 @@ model Playtime{
   start       String
   end         String
   startHour   Int
-  status      Int
+  status      Int // 0 (passed), 1(available), 2(booked), 4(pending)
   date        DateTime
   court       Court       @relation(fields: [courtID], references: [id])
   courtID     String      @db.ObjectId
@@ -66,5 +67,8 @@ model Order {
   items         String[]
   orderStatus   String
   books         Book[]
+  username      User      @relation(fields: [usernameID], references: [id])
+  usernameID    String    @db.ObjectId 
+  createdAt     DateTime
 }
 

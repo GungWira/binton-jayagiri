@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { cookies } from "next/headers";
+import { createToken, verifyToken } from "@/libs/jwt";
 
 const prisma = new PrismaClient()
 
@@ -30,9 +31,8 @@ export async function POST(request : NextRequest) {
     // if valid
     if(result.username === username){
       // return ke halaman login
-      cookies().set('username', result.username, {httpOnly : true, maxAge : 60*60, secure : true})
-      cookies().set('phone', result.phone, {httpOnly : true, maxAge : 60*60, secure : true})
-      cookies().set('id', result.id, {httpOnly : true, maxAge : 60*60, secure : true})
+      const token = createToken({ id : result.id, username: result.username, phone : result.phone})
+      cookies().set('auth', token, {httpOnly : true, maxAge : 60*60, secure : true})
       return NextResponse.json({message: "Valid username", data : result})
     }
     // if invalid
@@ -45,8 +45,7 @@ export async function POST(request : NextRequest) {
       phone,
     }
   })
-  cookies().set('username', post.username, {httpOnly : true, maxAge : 60*60, secure : true})
-  cookies().set('phone', post.phone, {httpOnly : true, maxAge : 60*60, secure : true})
-  cookies().set('id', post.id, {httpOnly : true, maxAge : 60*60, secure : true})
+  const token = createToken({ id : post.id, username: post.username, phone : post.phone})
+  cookies().set('auth', token, {httpOnly : true, maxAge : 60*60, secure : true})
   return NextResponse.json({message: "User created successfully", data : post})
 }

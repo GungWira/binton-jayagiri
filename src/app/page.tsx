@@ -16,15 +16,14 @@ const fetchUpdate = async () =>{
 
 export default async function Home() {
   const cookieStrore = cookies()
-  const name = cookieStrore.get('name')
-  const id = cookieStrore.get('id')
+  const auth = cookieStrore.get('auth')
   const serve = await fetchUpdate()
   
   return (
     <>
       <main>
         <Loading serve={serve}/>
-        {name === undefined && id === undefined ? 
+        {auth === undefined? 
         <Login/>
         :
         <Dashboard/>

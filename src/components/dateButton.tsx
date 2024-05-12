@@ -6,11 +6,11 @@ import Drop from "../../public/drop.svg"
 import CourtTable from "./courtTable";
 import { useEffect, useState, useRef } from "react";
 
-export default function DateButton({data} : any){
+export default function DateButton({data, dataUser} : any){
   const [dateList, setDateList] = useState([])
   const [dateIndex, setDateIndex] = useState(0)
   const boxDateRef = useRef<HTMLDivElement | null>(null)
-
+  
   useEffect(() =>{
     const getDayName = (dayIndex : number) => {
       const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -22,7 +22,7 @@ export default function DateButton({data} : any){
       const date = `${item.date.split("T")[0].split("-")[2]}-${item.date.split("T")[0].split("-")[1]}-${item.date.split("T")[0].split("-")[0]}`
       return `${day}, ${date}`;
     });
-      setDateList(formattedDateList)
+    setDateList(formattedDateList)
   }, [])
 
   const openDateList = () =>{
@@ -56,7 +56,7 @@ export default function DateButton({data} : any){
           ))}
         </div>
       </div>
-      <CourtTable data={data[dateIndex]}/>
+      <CourtTable data={data[dateIndex]} userData={dataUser}/>
     </>
   )
 }

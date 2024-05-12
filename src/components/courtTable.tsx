@@ -23,15 +23,15 @@ declare global {
   }
 }
 
-export default function CourtTable({data} : {data : any}, {handler} : {handler : any}){
+export default function CourtTable({data, userData} : any){
   const [orders, setOrders] = useState<Order[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const courts = data.courts
   const checkoutBtnRef = useRef<HTMLButtonElement | null>(null)
   const sectionRef = useRef<HTMLDivElement | null>(null)
   const [start, setStart] = useState(false)
-
   const router = useRouter()
+  const user = userData
 
   const orderHandler = (book : Order) => {
     const isOrdered = orders.some((order : Order) => order.id === book.id)
@@ -138,7 +138,7 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
                 </button>
                 )
               // jam masih ada
-              }else if(playTime.status === 1 || playTime.status === 4){
+              }else if(playTime.status === 1){
                 return(  
                 <button key={lock} className="mb-1 py-2 border rounded-full w-full flex justify-center items-center" style={{borderColor: border}} onClick={() => {orderHandler(playCourt)}}>
                   <p className="font-ligth text-xs text-[#434343]">{`${playTime.start} - ${playTime.end}`}</p>
@@ -168,11 +168,11 @@ export default function CourtTable({data} : {data : any}, {handler} : {handler :
         <p className="text-[#434343] font-bold text-md pb-4 w-full">Detail Pemesanan</p>
         <div className="flex flex-row justify-between items-center w-full">
           <p className="text-[#434343] font-ligth text-xs">Nama</p>
-          <p className="text-[#434343] font-bold text-xs">Satria Saharani</p>
+          <p className="text-[#434343] font-bold text-xs">{user.username}</p>
         </div>
         <div className="flex flex-row justify-between items-center w-full">
           <p className="text-[#434343] font-ligth text-xs">Nomor Telp</p>
-          <p className="text-[#434343] font-bold text-xs">0895622771393</p>
+          <p className="text-[#434343] font-bold text-xs">{user.phone}</p>
         </div>
         <div className="flex flex-row justify-between items-center w-full">
           <p className="text-[#434343] font-ligth text-xs">Banyak Jam Order</p>

@@ -46,6 +46,55 @@ const convertToISOSting = (obj : String) =>{
         status : 0
       }
     })
+    return true
+  }
+
+  // update cart based time
+  const updateCartBaseTime = async () =>{
+    const curentDate = new Date()
+    const playTimeIDs : string[] = []
+    curentDate.setMinutes(curentDate.getMinutes() - 15) // lima belas menit sebelumnya
+    const results = await prisma.order.findMany({
+      where : {
+        orderStatus : "pending",
+        createdAt : {
+          lte : curentDate
+        },
+      }
+    })
+    if(results){
+      results.map((result) =>{
+        result.items.map((item) =>{
+          playTimeIDs.push(item)
+        })
+      })
+      const expired = await prisma.order.updateMany({
+      where : {
+        orderStatus : "pending",
+        createdAt : {
+          lte : curentDate
+        },
+      },
+      data : {
+        orderStatus : "cancel"
+      }
+    })
+    if(expired){
+      const update = await prisma.playtime.updateMany({
+        where : {
+          id : {
+            in : playTimeIDs
+          },
+        },
+        data : {
+          status : 1
+        }
+      })
+        if(update){
+          return updateDataBaseTime()
+        }
+      }
+    }
   }
   if(dataCount < 7){
     // if no
@@ -130,7 +179,10 @@ const convertToISOSting = (obj : String) =>{
       })
     }
   }
-  updateDataBaseTime()
+  const updateCart = await updateCartBaseTime()
+  if(updateCart){
+     return NextResponse.json({message : "Data ready to serve!", serve: true}, {status:200})
+  }
   return NextResponse.json({message : "Data ready to serve!", serve: true}, {status:200})
 }
 

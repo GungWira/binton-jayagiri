@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { verifyToken } from "@/libs/jwt";
 
 const prisma = new PrismaClient()
 
@@ -18,6 +19,7 @@ export async function POST(request:NextRequest) {
   const body = await request.json()
   const date = new Date()
   const curentDate = convertToISOSting(date.toLocaleString('en-US', {timeZone: 'Asia/Makassar', hour12:false}))
+
   // update data based time
   const updateDataBaseTime = async () =>{
     const curentHourTime = parseInt(date.toLocaleString('id-ID', {timeZone: 'Asia/Makassar'}).split(" ")[1].split(".")[0])
@@ -36,11 +38,15 @@ export async function POST(request:NextRequest) {
       }
     })
   }
+
   updateDataBaseTime()
+
   try {
+    const verify = verifyToken(body.auth)
+    const usernameID = verify?.id
     const data = await prisma.book.findMany({
       where : {
-        usernameID : body.usernameID,
+        usernameID : usernameID,
         status : true
       },
       include:{

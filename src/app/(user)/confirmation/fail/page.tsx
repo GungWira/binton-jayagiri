@@ -9,6 +9,9 @@ export default function SuccessPage(){
   const router = useRouter()
   const [countdown, setCountdown] = useState(8);
   
+  // if(!cookies().get('auth')){
+  //   router.push('/')
+  // }
   const backToOrder = () =>{
     console.log("pp")
     router.push("/order")
