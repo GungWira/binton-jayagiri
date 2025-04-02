@@ -27,3 +27,42 @@ cd binton-jayagiri
 ```sh
 npm install
 ```
+
+### 3️⃣ Set Up Environment Variables
+```sh
+NEXT_PUBLIC_REQ_URL="http://localhost:3000/api"
+DATABASE_URL="mysql://user:password@localhost:3306/db_name"
+JWT_SECRET="your-secret-key"
+NEXT_PUBLIC_CLIENT_KEY = "your-midtrans-client-key"
+SECRET_KEY = "your-midtrans-secret-key"
+```
+
+### 4️⃣ Run Database Migrations
+```sh
+npx prisma migrate dev --name init
+```
+
+### 5️⃣ Generate Prisma Client
+```sh
+npx prisma generate
+```
+
+### 6️⃣ Start the Development Server
+```sh
+npm run dev
+```
+
+## 📌 Features
+
+✅ User authentication with JWT
+✅ Court booking management
+✅ MySQL database integration using Prisma
+✅ Secure API with Next.js API routes
+
+## 🤝 Contributing
+
+Feel free to fork this repository, submit issues, or make pull requests.
+
+## 📜 License
+
+This project is licensed under the MIT License.
