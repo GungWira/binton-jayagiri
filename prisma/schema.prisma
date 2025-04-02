@@ -9,66 +9,72 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
-  username      String
-  phone         String     @unique
-  books         Book[]
-  orders        Order[]
+  id        Int      @id @default(autoincrement())
+  username  String
+  phone     String   @unique
+  books     Book[]
+  orders    Order[]
 }
 
 model DateList {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
-  date          DateTime
-  status        Boolean
-  courts        Court[]
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  status    Boolean
+  courts    Court[]
 }
 
 model Court {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  date          DateList  @relation(fields: [dateID], references: [id])
-  dateID        String    @db.ObjectId
-  playTime      Playtime  []
+  id        Int      @id @default(autoincrement())
+  name      String
+  dateID    Int
+  date      DateList @relation(fields: [dateID], references: [id])
+  playTime  Playtime[]
 }
 
-
-model Playtime{
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  start       String
-  end         String
-  startHour   Int
-  status      Int // 0 (passed), 1(available), 2(booked), 4(pending)
-  date        DateTime
-  court       Court       @relation(fields: [courtID], references: [id])
-  courtID     String      @db.ObjectId
+model Playtime {
+  id        Int      @id @default(autoincrement())
+  start     String
+  end       String
+  startHour Int
+  status    Int // 0 (passed), 1(available), 2(booked), 4(pending)
+  date      DateTime
+  courtID   Int
+  court     Court     @relation(fields: [courtID], references: [id])
 }
 
 model Book {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  date          DateTime
-  court         String
-  start         String
-  end           String
-  startHour     Int
-  status        Boolean  // true if still valid time, false if passed the time
-  username      User      @relation(fields: [usernameID], references: [id])
-  usernameID    String    @db.ObjectId 
-  orderStatus   Order     @relation(fields: [orderID], references: [id])
-  orderID       String    @db.ObjectId
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  court       String
+  start       String
+  end         String
+  startHour   Int
+  status      Boolean  // true if still valid time, false if passed the time
+  usernameID  Int
+  username    User     @relation(fields: [usernameID], references: [id])
+  orderID     Int
+  orderStatus Order    @relation(fields: [orderID], references: [id])
 }
 
 model Order {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  items         String[]
-  orderStatus   String
-  books         Book[]
-  username      User      @relation(fields: [usernameID], references: [id])
-  usernameID    String    @db.ObjectId 
-  createdAt     DateTime
+  id          Int          @id @default(autoincrement())
+  orderStatus String
+  books       Book[]
+  usernameID  Int
+  username    User         @relation(fields: [usernameID], references: [id])
+  createdAt   DateTime     @default(now())
+  items       OrderItem[]  
+}
+
+model OrderItem {
+  id      Int    @id @default(autoincrement())
+  order   Order  @relation(fields: [orderID], references: [id], onDelete: Cascade)
+  orderID Int
+  itemID  Int 
 }
 

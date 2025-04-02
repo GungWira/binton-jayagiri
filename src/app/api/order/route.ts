@@ -2,59 +2,71 @@ import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/libs/jwt";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-const convertToISOSting = (obj : String) =>{
-  const year:number = parseInt(obj.split(",")[0].split("/")[2])
-  const month:number = parseInt(obj.split(",")[0].split("/")[0]) - 1
-  const day:number = parseInt(obj.split(",")[0].split("/")[1])
+const convertToISOSting = (obj: String) => {
+  const year: number = parseInt(obj.split(",")[0].split("/")[2]);
+  const month: number = parseInt(obj.split(",")[0].split("/")[0]) - 1;
+  const day: number = parseInt(obj.split(",")[0].split("/")[1]);
 
-  const newDate = new Date(year, month, day, 8, 0, 0)
-  return newDate.toISOString()
-}
+  const newDate = new Date(year, month, day, 8, 0, 0);
+  return newDate.toISOString();
+};
 
-export async function POST(request:NextRequest) {
-  const body = await request.json()
-  const date = new Date()
-  const curentDate = convertToISOSting(date.toLocaleString('en-US', {timeZone: 'Asia/Makassar', hour12:false}))
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  const date = new Date();
+  const curentDate = convertToISOSting(
+    date.toLocaleString("en-US", { timeZone: "Asia/Makassar", hour12: false })
+  );
 
   // update data based time
-  const updateDataBaseTime = async () =>{
-    const curentHourTime = parseInt(date.toLocaleString('id-ID', {timeZone: 'Asia/Makassar'}).split(" ")[1].split(".")[0])
-    const tomorowDate = new Date()
-    tomorowDate.setDate(date.getDate() + 1)
-    const curentTomorrowDate = convertToISOSting(tomorowDate.toLocaleString('en-US', {timeZone: 'Asia/Makassar', hour12:false}))
+  const updateDataBaseTime = async () => {
+    const curentHourTime = parseInt(
+      date
+        .toLocaleString("id-ID", { timeZone: "Asia/Makassar" })
+        .split(" ")[1]
+        .split(".")[0]
+    );
+    const tomorowDate = new Date();
+    tomorowDate.setDate(date.getDate() + 1);
+    const curentTomorrowDate = convertToISOSting(
+      tomorowDate.toLocaleString("en-US", {
+        timeZone: "Asia/Makassar",
+        hour12: false,
+      })
+    );
     await prisma.book.updateMany({
       where: {
-        date : {gte : curentDate, lt: curentTomorrowDate},
-        AND : {
-          startHour : {lte : curentHourTime}
-        }
+        date: { gte: curentDate, lt: curentTomorrowDate },
+        AND: {
+          startHour: { lte: curentHourTime },
+        },
       },
-      data :{
-        status : false
-      }
-    })
-  }
+      data: {
+        status: false,
+      },
+    });
+  };
 
-  updateDataBaseTime()
+  updateDataBaseTime();
 
   try {
-    const verify = verifyToken(body.auth)
-    const usernameID = verify?.id
+    const verify = verifyToken(body.auth);
+    const usernameID = verify!.id;
     const data = await prisma.book.findMany({
-      where : {
-        usernameID : usernameID,
-        status : true
+      where: {
+        usernameID: parseInt(usernameID),
+        status: true,
       },
-      include:{
-        orderStatus : true
-      }
+      include: {
+        orderStatus: true,
+      },
     });
-    return NextResponse.json({message: "Data founded", data: data})
+    return NextResponse.json({ message: "Data founded", data: data });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
