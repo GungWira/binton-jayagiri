@@ -1,6 +1,6 @@
 # 🎾 Binton Jayagiri
 
-![Binton Jayagiri Banner](./banner.png)
+![Binton Jayagiri Banner](./public/banner-binton-jayagiri.png)
 
 Binton Jayagiri is a web application developed by **Anak Agung Gede Putu Wiradarma** using **Next.js, Prisma, MySQL, and JWT** for authentication. This project serves as a platform for managing badminton court bookings efficiently.
 
@@ -18,17 +18,20 @@ Binton Jayagiri is a web application developed by **Anak Agung Gede Putu Wiradar
 Follow these steps to set up the project after cloning the repository:
 
 ### 1️⃣ Clone the Repository
+
 ```sh
 git clone https://github.com/your-username/binton-jayagiri.git
 cd binton-jayagiri
 ```
 
 ### 2️⃣ Install Dependencies
+
 ```sh
 npm install
 ```
 
 ### 3️⃣ Set Up Environment Variables
+
 ```sh
 NEXT_PUBLIC_REQ_URL="http://localhost:3000/api"
 DATABASE_URL="mysql://user:password@localhost:3306/db_name"
@@ -38,16 +41,19 @@ SECRET_KEY = "your-midtrans-secret-key"
 ```
 
 ### 4️⃣ Run Database Migrations
+
 ```sh
 npx prisma migrate dev --name init
 ```
 
 ### 5️⃣ Generate Prisma Client
+
 ```sh
 npx prisma generate
 ```
 
 ### 6️⃣ Start the Development Server
+
 ```sh
 npm run dev
 ```
