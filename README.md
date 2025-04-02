@@ -52,16 +52,22 @@ npx prisma generate
 npm run dev
 ```
 
+---
+
 ## 📌 Features
 
-✅ User authentication with JWT
-✅ Court booking management
-✅ MySQL database integration using Prisma
-✅ Secure API with Next.js API routes
+- ✅ User authentication with JWT
+- ✅ Court booking management
+- ✅ MySQL database integration using Prisma
+- ✅ Secure API with Next.js API routes
+
+---
 
 ## 🤝 Contributing
 
 Feel free to fork this repository, submit issues, or make pull requests.
+
+---
 
 ## 📜 License
 
